@@ -69,3 +69,33 @@ CREATE TABLE silver.crm_sales_details
 );
 
 
+
+-- ===================================
+
+-- CREATE CUST_AZ12 table
+IF OBJECT_ID('silver.erp_cust_az12', 'U') IS NOT NULL
+    DROP TABLE silver.erp_cust_az12;
+
+CREATE TABLE silver.erp_cust_az12
+(
+    CID NVARCHAR(50),
+    BDATE DATE,
+    GEN NVARCHAR(50),
+    dwh_create_date DATETIME2 DEFAULT GETDATE()
+)
+
+-- ==================================
+
+-- CREATE LOC_A101 table
+IF OBJECT_ID('silver.erp_loc_a101', 'U') IS NOT NULL    
+    DROP TABLE silver.erp_loc_a101;
+
+CREATE TABLE silver.erp_loc_a101
+(
+    CID NVARCHAR(50),
+    CNTRY NVARCHAR(50),
+    dwh_create_date DATETIME2 DEFAULT GETDATE()
+)
+
+
+-- =================================

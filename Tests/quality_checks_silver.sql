@@ -93,7 +93,7 @@ SELECT
 SELECT 
     cat_id   
     FROM silver.crm_prd_info
-    WHERE cat_id NOT IN (SELECT DISTINCT ID FROM silver.erp_px_cat_g1v2);
+    WHERE cat_id NOT IN (SELECT DISTINCT ID FROM bronze.erp_px_cat_g1v2);
 
 
 
@@ -189,4 +189,83 @@ WHERE sls_sales != sls_quantity * sls_price
    OR sls_quantity <= 0 
    OR sls_price <= 0
 ORDER BY sls_sales, sls_quantity, sls_price;
+
+
+-- =======================================
+-- Checks for ( cust_az12 ).
+-- =======================================
+
+-- check if (CID) is duplicated or null.
+SELECT 
+    CID,
+    COUNT(CID) AS cnt_CID
+    FROM silver.erp_cust_az12
+    GROUP BY CID
+    HAVING COUNT(CID) > 1 OR CID IS NULL;
+
+
+-- Check if (CID) is (cust_key) of (crm_cust_info) table.
+
+SELECT 
+    CID
+    FROM silver.erp_cust_az12
+    WHERE CID NOT IN (SELECT  cust_key FROM silver.crm_cust_info)
+--
+SELECT 
+    SUBSTRING(CID, 1, 3)
+    FROM silver.erp_cust_az12
+    WHERE CID NOT IN (SELECT  cust_key FROM silver.crm_cust_info)
+    GROUP BY SUBSTRING(CID, 1, 3)
+
+            -- all the CID values in (bronze.erp_cust_az12) 
+            -- table that start with 'NAS' not in (SELECT  cust_key FROM silver.crm_cust_info) 
+
+
+
+-- Check if (BDATE) is not valid
+SELECT
+    BDATE
+    FROM silver.erp_cust_az12
+    WHERE BDATE IS NULL
+    OR BDATE < '1900-01-01'
+    OR BDATE > '2050-01-01';
+
+
+-- Data Standardization & Consistency
+SELECT DISTINCT GEN FROM silver.erp_cust_az12;
+
+
+-- ===============================
+-- Checks for (loc_a101).
+-- ===============================
+
+-- Check if (CID) is duplicated or null.
+SELECT 
+    CID,
+    COUNT(CID) AS cnt_CID
+    FROM silver.erp_loc_a101
+    GROUP BY CID
+    HAVING COUNT(CID) > 1 OR CID IS NULL;
+
+
+-- Check if (CID) is (cust_key) of (crm_cust_info) table.
+SELECT 
+    CID
+    FROM silver.erp_loc_a101
+    WHERE CID NOT IN (SELECT  cust_key FROM silver.crm_cust_info)
+
+            -- CID in erp_loc_a101 = cust_key in crm_cust_info
+            -- but without dashes in CID values in erp_loc_a101
+SELECT 
+    CID 
+    FROM silver.erp_loc_a101
+    WHERE REPLACE(CID,'-','') NOT IN (SELECT  cust_key FROM silver.crm_cust_info)
+
+
+-- Data Standardization & Consistency
+SELECT DISTINCT cntry FROM silver.erp_loc_a101;
+
+SELECT * FROM silver.erp_loc_a101
+
+
 

@@ -127,3 +127,61 @@ SELECT
     THEN sls_sales / NULLIF(sls_quantity, 0) ELSE sls_price END AS sls_price
 
 FROM bronze.crm_sales_details
+
+
+
+-- ===============================
+-- Load data into (cust_az12).
+-- ===============================
+
+TRUNCATE TABLE silver.erp_cust_az12;
+
+INSERT INTO silver.erp_cust_az12
+(
+    CID,
+    BDATE,
+    GEN
+)
+SELECT 
+    
+    CASE 
+        WHEN CID LIKE 'NAS%' THEN SUBSTRING(CID, 4, LEN(CID)) 
+        ELSE CID
+    END AS CID,
+
+    CASE
+        WHEN BDATE > '1900-01-01' AND BDATE < GETDATE() THEN BDATE
+        ELSE NULL 
+    END AS BDATE,
+
+    CASE 
+        WHEN SUBSTRING(UPPER(TRIM(GEN)), 1, 1) = 'F' THEN 'Female'
+        WHEN SUBSTRING(UPPER(TRIM(GEN)), 1, 1) = 'M' THEN 'Male'
+        ELSE 'n/a' 
+    END AS GEN
+        
+    FROM bronze.erp_cust_az12;
+
+
+-- ===============================
+-- Load data into (loc_a101).
+-- ===============================
+INSERT INTO silver.erp_loc_a101
+(
+    CID,
+    CNTRY
+)
+SELECT 
+    REPLACE(CID,'-','') AS CID,
+
+    CASE 
+        WHEN UPPER(TRIM(CNTRY)) IN ('US', 'USA' , 'UNITED STATUS') THEN 'United States' 
+        WHEN UPPER(TRIM(CNTRY)) IN ('GERMANY', 'DE') THEN 'Germany'
+        WHEN UPPER(TRIM(CNTRY)) IN ('AUSTRALIA') THEN 'Australia'
+        WHEN UPPER(TRIM(CNTRY)) IN ('FRANCE') THEN 'France'
+        WHEN UPPER(TRIM(CNTRY)) IN ('CANADA') THEN 'Canada'
+        WHEN UPPER(TRIM(CNTRY)) IN ('UNITED KINGDOM') THEN 'United Kingdom'
+        ELSE 'n/a'
+    END AS CNTRY
+
+    FROM bronze.erp_loc_a101;
