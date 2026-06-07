@@ -265,7 +265,42 @@ SELECT
 -- Data Standardization & Consistency
 SELECT DISTINCT cntry FROM silver.erp_loc_a101;
 
-SELECT * FROM silver.erp_loc_a101
 
 
+-- ===============================
+-- Check for (erp_px_cat_g1v2).
+-- ===============================
 
+-- Check if (ID) is duplicated or null.
+SELECT 
+    ID,
+    COUNT(ID) AS cnt_ID
+    FROM silver.erp_px_cat_g1v2
+    GROUP BY ID
+    HAVING COUNT(ID) > 1 OR ID IS NULL;
+
+-- Check if (ID) is (cat_id) of (crm_prd_info) table.
+SELECT 
+    ID
+    FROM silver.erp_px_cat_g1v2
+    WHERE ID NOT IN (SELECT  cat_id FROM silver.crm_prd_info)
+
+
+-- Check if (cat) has white spaces or equals null.
+SELECT
+    cat
+    FROM silver.erp_px_cat_g1v2
+    WHERE cat != TRIM(cat) OR cat IS NULL;
+
+
+-- Check if (SUBCAT) has white spaces or equals null.
+SELECT 
+    subcat
+    FROM silver.erp_px_cat_g1v2
+    WHERE subcat != TRIM(subcat) OR subcat IS NULL;
+
+
+-- Data Standardization & Consistency
+SELECT DISTINCT MAINTENANCE FROM silver.erp_px_cat_g1v2;
+
+SELECT * FROM silver.erp_px_cat_g1v2
