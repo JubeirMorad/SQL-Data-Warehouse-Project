@@ -200,7 +200,8 @@ BEGIN
         -- ===============================
         PRINT 'Loading silver.erp_loc_a101.';
         SET @start_time = GETDATE();
-
+        
+        TRUNCATE TABLE silver.erp_loc_a101;
         INSERT INTO silver.erp_loc_a101
         (
             CID,
