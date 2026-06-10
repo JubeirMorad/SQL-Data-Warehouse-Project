@@ -66,7 +66,7 @@ data-warehouse-project/
 
 I'm **Jubeir Salameh Morad**. I’m an IT student and I aspire to be a professional software engineer.
 
- [![Email](https://img.shields.io/badge/Email-ffffff?style=for-the-badge&logo=gmail&logoColor=red)](jubiermorad@gmail.com)
+ ![jubiermorad@gmail.com](https://img.shields.io/badge/jubiermorad@gmail.com-ffffff?style=for-the-badge&logo=gmail&logoColor=red)
  [![LinkedIn](https://img.shields.io/badge/LinkedIn-005eff?style=for-the-badge&logo=linkedinlogoColor=white)](https://www.linkedin.com/in/jubeir-morad-8053b0389/) 
  [![Instagram](https://img.shields.io/badge/Instagram-c40c71?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/dev.jubeir.morad?igsh=OXl5Yzd5cGw3MmNm)
  [![Website](https://img.shields.io/badge/Website-00d6f7?style=for-the-badge&logo=google-chrome&logoColor=white)](https://jubeirmorad.netlify.app)
